@@ -82,7 +82,7 @@ class BaseModel(nn.Module, ABC):
 
     @abstractmethod
     def forward(self, *args, **kwargs):
-        del args, kwargs
+        pass
 
     def _update_features_extractor(
         self, net_kwargs: Dict[str, Any], features_extractor: Optional[BaseFeaturesExtractor] = None
@@ -119,6 +119,8 @@ class BaseModel(nn.Module, ABC):
         preprocessed_obs = preprocess_obs(obs, self.observation_space, normalize_images=self.normalize_images)
         return self.features_extractor(preprocessed_obs)
 
+    # Review: this name is waaay to generic. This is 1. the data to be saved (along with the state dict) and 2. the data to be passed to the constructor when loading.
+    #  I bet we can find a name that encodes this! _get_reconstruction_parameters _get_constructor_parameters_for_reconstruction
     def _get_data(self) -> Dict[str, Any]:
         """
         Get data that need to be saved in order to re-create the model.
